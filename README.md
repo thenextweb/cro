@@ -2,6 +2,14 @@
 Scripts that support A/B + Multivariate Testing (for [The Next Web]
 (http://thenextweb.com)), via [Google Tag Manager](http://tagmanager.google.com).
 
+Features
+--------
+* Supports: A/B testing and Multivariate testing.
+* Integration with Google Analytics, will send data for variants to custom dimensions.
+* Supported via Google Tag Manager but also easily configurable to run natively.
+
+<hr />
+
 ## Usage
 Both scripts work in a similar order and require the use of Google Tag Manager
 to make sure it will work. You can add a new tag there to make sure your
