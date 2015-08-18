@@ -18,12 +18,12 @@ variants are working.
 * `testID` - the Id for your test.
 * `testDays` - the number of days you'd like to run the test, if not provided it
 will fallback to 8 days (1 week + 1 extra day for accurate analysis).
-* `randomNumber` - the randon number variable used in Google Tag Manager.
+* `randomNumber` - the randon number variable used in Google Tag Manager. Make sure you enabled Random Number as a variable in GTM.
 * `testVariant` - reads if the user has a cookie to see if he's in a current variant.
 * `variants` - the code for the variants, you can add an unlimited number.
 
 We'll check if a user is in a certain variant to make sure that the user doesn't
-get any mixed up experiences. Next to that we also make sure the user is not in 
+get any mixed up experiences. Next to that we also make sure the user is not in
 any other test currently by checking for any cookies that start with: `tnw`.
 
 ### Quick start:
@@ -53,7 +53,7 @@ Include the whole script and at the top of the script change the testing variabl
 To measure the variants + experiments in Google Analytics we send the data to
 Google Analytics via custom dimensions. In both scripts we send the data via the
 `sendDimension(variant)` function.
-You'll have to create a custom report in Google Analytics to show you the 
+You'll have to create a custom report in Google Analytics to show you the
 specific data for your variants.
 
 Data in Google Analytics for different variants will show up like:
