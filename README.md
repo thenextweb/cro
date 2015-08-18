@@ -15,10 +15,10 @@ Both scripts work in a similar order and require the use of Google Tag Manager
 to make sure it will work. You can add a new tag there to make sure your
 variants are working.
 
-* `testID` - the Id for your test.
-* `testDays` - the number of days you'd like to run the test, if not provided it
-will fallback to 8 days (1 week + 1 extra day for accurate analysis).
-* `randomNumber` - the randon number variable used in Google Tag Manager. Make sure you enabled Random Number as a variable in GTM.
+* `testID` - the id for your test.
+* `testDays` - the number of days you'd like to run the test.
+* `randomNumber` - the randon number variable used in Google Tag Manager. Make
+sure you enabled Random Number as a variable in GTM.
 * `testVariant` - reads if the user has a cookie to see if he's in a current variant.
 * `variants` - the code for the variants, you can add an unlimited number.
 
@@ -27,25 +27,25 @@ get any mixed up experiences. Next to that we also make sure the user is not in
 any other test currently by checking for any cookies that start with: `tnw`.
 
 ### Quick start:
-Include the whole script and at the top of the script change the testing variables:
+Include the whole script and at the top of the script change the testing constants:
 
-	// Variables
-	var testID = '001',
-	    testDays = 8,
-	    randomNumber = {{Randon Number}},
-	    testVariant = readCookie(testID),
-	    variants = {
-	      1: {
-	        execute: function() {
-	          $("body").css({"background","green"}); // Make the background green.
-	        }
-	      },
-	      2: {
-	        execute: function() {
-	          $("body").css({"background","red"}); // Make the background red.
-	        }
-	      }
-	    };
+	// Constants
+	const testID = '001',
+		    testDays = 8,
+		    randomNumber = {{Randon Number}},
+		    testVariant = readCookie(testID),
+		    variants = {
+		      1: {
+		        execute: function() {
+		          //
+		        }
+		      },
+		      2: {
+		        execute: function() {
+		          //
+		        }
+		      }
+		    };
 
 *Note:* You'll never have to add 0, it will take care of the original variant.
 

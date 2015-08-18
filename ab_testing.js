@@ -18,11 +18,10 @@ const testID = '001',
 
 // Helpers
 function setCookie(testID, variantID, testDays) {
-  if (typeof(testDays) === 'undefined') testDays = 8;
   var date = new Date();
   date.setTime(date.getTime() + (testDays * 86400000));
   var expires = '; expires=' + date.toGMTString();
-  document.cookie = 'tnw-' + testID + '=' + testID + '-' + variantID + expires + '; path=/';
+  document.cookie = 'tnw-' + testID + '=' + variantID + expires + '; path=/';
 }
 
 function readCookie(testID) {
@@ -63,17 +62,17 @@ function variant(variantID) {
 }
 
 // Check variants v.s. cookies
-if(testVariant) {
-  for (var i = 0; i <= Object.keys(variants).length; i++) {
-    if (testVariant === testID + '-' + i) variant(i);
-  }
-} else if(!inTest()) {
+const variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1));
+
+if (testVariant) {
+  variant(testVariant);
+} else if (!inTest()) {
   var chosen = 0;
-  for (var j = 0; j <= 2147483647; j+= Math.round(2147483647 / (Object.keys(variants).length + 1))) {
-    if (randomNumber <= Math.round(2147483647 / (Object.keys(variants).length) + 1)) {
+  for (var j = 0; j <= 2147483647; j+= variantsRandom) {
+    if (randomNumber <= variantsRandom) {
       variant(chosen);
       break;
-    } else if (randomNumber >= j && randomNumber < j + Math.round(2147483647 / (Object.keys(variants).length + 1))) {
+    } else if (randomNumber >= j && randomNumber < (j + variantsRandom)) {
       variant(chosen);
       break;
     }
