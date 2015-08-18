@@ -69,7 +69,7 @@ want to change this dimension and set it up in Google Analytics. Also we use the
 We set the cookies for the length of the test that is added in the variables at
 the beginning of a test. The names and values of the cookies look like:
 
-* Name: `tnw-{testID}`, with the value: `{testID}-{testVariant}` for A/B testing.
+* Name: `tnw-{testID}`, with the value: `{testVariant}` for A/B testing.
 * Name: `tnw-{testID}`, with the value: `{changeID}-{testVariant}` for
 multivariate testing (MVT).
 
