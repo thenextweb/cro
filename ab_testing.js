@@ -1,7 +1,7 @@
 // Variables
-const testID = '001',
+var testID = '001',
       testDays = 8,
-      randomNumber = {{Randon Number}},
+      randomNumber = {{Random Number}},
       testVariant = readCookie(testID),
       variants = {
         1: {
@@ -62,7 +62,7 @@ function variant(variantID) {
 }
 
 // Check variants v.s. cookies
-const variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1));
+var variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1));
 
 if (testVariant) {
   variant(testVariant);
