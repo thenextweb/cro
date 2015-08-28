@@ -20,34 +20,34 @@ variants are working.
 * `randomNumber` - the randon number variable used in Google Tag Manager. Make
 sure you enabled Random Number as a variable in GTM.
 * `testVariant` - reads if the user has a cookie to see if he's in a current variant.
-* `variants` - the code for the variants, you can add an unlimited number.
+* `variants` - the code for the variants, you can add an unlimited amount of variants.
 
 We'll check if a user is in a certain variant to make sure that the user doesn't
 get any mixed up experiences. Next to that we also make sure the user is not in
 any other test currently by checking for any cookies that start with: `tnw`.
 
 ### Quick start:
-Include the whole script and at the top of the script change the testing constants:
+Include the whole script and at the top of the script change the testing variables:
 
 	// Constants
-	const testID = '001',
-		    testDays = 8,
-		    randomNumber = {{Randon Number}},
-		    testVariant = readCookie(testID),
-		    variants = {
-		      1: {
-		        execute: function() {
-		          //
-		        }
-		      },
-		      2: {
-		        execute: function() {
-		          //
-		        }
-		      }
-		    };
+	vars testID = '001',
+		   testDays = 8,
+		   randomNumber = {{Randon Number}},
+		   testVariant = readCookie(testID),
+		   variants = {
+		     1: {
+		       execute: function() {
+		         //
+		       }
+		     },
+		     2: {
+		       execute: function() {
+		         //
+		     }
+		   };
 
-*Note:* You'll never have to add 0, it will take care of the original variant.
+*Note:* You'll never have to add 0, it will take care of the original variant itself.
+You can read more about [how to add a test in Google Tag Manager here](https://github.com/MartijnSch/cro/wiki/How-to-add-a-test-in-Google-Tag-Manager-(GTM)).
 
 #### Google Analytics
 To measure the variants + experiments in Google Analytics we send the data to
