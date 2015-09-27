@@ -36,19 +36,19 @@ function readCookie(testID) {
   return null;
 }
 
-function inTest() {
+function checkCookie(name) {
   ca = document.cookie.split(';')
 
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf("tnw-") > -1) return true;
+    if (c.indexOf(name) > -1) return true;
   }
   return false;
 }
 
 function sendDimension(variant) {
-  ga("set",'dimension10','tnw-' + testID + '-' + variant);
+  if (checkCookie('_ga')) ga("set",'dimension10','tnw-' + testID + '-' + variant);
 }
 
 function control(testVariant) {
@@ -66,7 +66,7 @@ var variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1))
 
 if (testVariant) {
   variant(testVariant);
-} else if (!inTest()) {
+} else if (!checkCookie('tnw-')) {
   var chosen = 0;
   for (var j = 0; j <= 2147483647; j+= variantsRandom) {
     if (randomNumber <= variantsRandom) {

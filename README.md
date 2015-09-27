@@ -78,12 +78,12 @@ whatever you'd like.
 
 Todo
 =======
-* Add more use cases on how to use this directly via Google Tag Manager.
-* Check if Google Analytics is initialized.
 * Make sure that you can run multiple A/B tests at the same time.
 
 History
 =======
+#### September 27, 2015 (2015-09-27)
+* Added a check to see if Google Analytics is initialized.
 
 #### August 18, 2015 (2015-08-18)
 * Initial commit to add more information to the README.

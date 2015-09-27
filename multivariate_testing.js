@@ -55,18 +55,18 @@ function readCookie(testID) {
   return null;
 }
 
-function inTest() {
+function checkCookie(name) {
   ca = document.cookie.split(';')
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf("tnw") > -1) return true;
+    if (c.indexOf(name) > -1) return true;
   }
   return false;
 }
 
 function sendDimension(change, variant) {
-  ga("set",'dimension10','tnw-' + testID + '-' + change + '-' + variant);
+  if(checkCookie('_ga')) ga("set",'dimension10','tnw-' + testID + '-' + change + '-' + variant);
 }
 
 function control(testChange, testVariant) {
@@ -83,7 +83,7 @@ function variant(changeID, variantID) {
 // Check variants v.s. cookies
 if(testVariant) {
   variant(testVariant[0], testVariant[1]);
-} else if(!inTest()) {
+} else if(!checkCookie('tnw-')) {
   var chosen = 0,
       random1 = Math.round((Math.random() * Object.keys(changes).length));
   for (var j = 0; j <= Object.keys(changes).length; j++) {
