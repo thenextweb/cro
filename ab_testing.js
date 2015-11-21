@@ -3,6 +3,7 @@ var testID = '001',
       testDays = 8,
       randomNumber = {{Random Number}},
       testVariant = readCookie(testID),
+      previewUrl = true,
       variants = {
         1: {
           execute: function() {
@@ -51,6 +52,18 @@ function sendDimension(variant) {
   if (checkCookie('_ga')) ga("set",'dimension10','tnw-' + testID + '-' + variant);
 }
 
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.search);
+  if(results == null) {
+    return "";
+  } else {
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+}
+
 function control(testVariant) {
   setCookie(testID, testVariant, testDays);
   sendDimension(testVariant);
@@ -64,7 +77,9 @@ function variant(variantID) {
 // Check variants v.s. cookies
 var variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1));
 
-if (testVariant) {
+if(previewUrl && getParameterByName('previewUrl') != "") {
+  variant(getParameterByName('previewUrl'));
+} else if (testVariant) {
   variant(testVariant);
 } else if (!checkCookie('tnw-')) {
   var chosen = 0;

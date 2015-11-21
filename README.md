@@ -20,6 +20,7 @@ variants are working.
 * `randomNumber` - the randon number variable used in Google Tag Manager. Make
 sure you enabled Random Number as a variable in GTM.
 * `testVariant` - reads if the user has a cookie to see if he's in a current variant.
+* `previewUrl` - do you want to enable the parameter to preview a variant, true by default.
 * `variants` - the code for the variants, you can add an unlimited amount of variants.
 
 We'll check if a user is in a certain variant to make sure that the user doesn't
@@ -34,6 +35,7 @@ Include the whole script and at the top of the script change the testing variabl
 		   testDays = 8,
 		   randomNumber = {{Randon Number}},
 		   testVariant = readCookie(testID),
+		   previewUrl = true,
 		   variants = {
 		     1: {
 		       execute: function() {
@@ -76,12 +78,19 @@ multivariate testing (MVT).
 *Note:* We prepend the cookie name: `tnw` but obviously you can change this to
 whatever you'd like.
 
+#### Preview
+You want to preview the changes of a certain test? Make sure that you add: 
+`?previewUrl={testVariant}` to the URL of a page to check your changes.
+
 Todo
 =======
 * Make sure that you can run multiple A/B tests at the same time.
 
 History
 =======
+#### November 21, 2015 (2015-11-21)
+* Add a preview URL.
+
 #### September 27, 2015 (2015-09-27)
 * Added a check to see if Google Analytics is initialized.
 
