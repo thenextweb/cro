@@ -1,5 +1,5 @@
-# CRO Library
-Scripts that support A/B + Multivariate Testing (for [The Next Web]
+# A/B Testing with Google Tag Manager
+Scripts that support A/B/n + Multivariate Testing (for [The Next Web]
 (http://thenextweb.com)), via [Google Tag Manager](http://tagmanager.google.com).
 
 Features
@@ -79,7 +79,7 @@ multivariate testing (MVT).
 whatever you'd like.
 
 #### Preview
-You want to preview the changes of a certain test? Make sure that you add: 
+You want to preview the changes of a certain test? Make sure that you add:
 `?previewUrl={testVariant}` to the URL of a page to check your changes.
 
 Todo
