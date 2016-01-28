@@ -17,7 +17,9 @@ var testID = '001',
         }
       };
 
-// Helpers
+/**
+ * @description Sets a cookie
+ */
 function setCookie(testID, variantID, testDays) {
   var date = new Date();
   date.setTime(date.getTime() + (testDays * 86400000));
@@ -25,6 +27,10 @@ function setCookie(testID, variantID, testDays) {
   document.cookie = 'tnw-' + testID + '=' + variantID + expires + '; path=/';
 }
 
+/**
+ * @param {{string}} testID
+ * @returns null
+ */
 function readCookie(testID) {
   var nameEQ = 'tnw-' + testID + '=',
       ca = document.cookie.split(';');
@@ -37,8 +43,12 @@ function readCookie(testID) {
   return null;
 }
 
+/**
+ * @param {string} name
+ * @returns {boolean} false
+ */
 function checkCookie(name) {
-  ca = document.cookie.split(';')
+  ca = document.cookie.split(';');
 
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
@@ -48,10 +58,17 @@ function checkCookie(name) {
   return false;
 }
 
+/**
+ * @param variant
+ */
 function sendDimension(variant) {
   if (checkCookie('_ga')) ga("set",'dimension10','tnw-' + testID + '-' + variant);
 }
 
+
+/**
+ * @param name
+ */
 function getParameterByName(name) {
   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
   var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -64,11 +81,17 @@ function getParameterByName(name) {
   }
 }
 
+/**
+ * @param testVariant
+ */
 function control(testVariant) {
   setCookie(testID, testVariant, testDays);
   sendDimension(testVariant);
 }
 
+/**
+ * @param variantID
+ */
 function variant(variantID) {
   control(variantID);
   if (variantID > 0) variants[variantID].execute();
