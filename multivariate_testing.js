@@ -101,7 +101,7 @@
     variant(getParameterByName('previewUrl'));
   } else if (testVariant) {
     variant(testVariant[0], testVariant[1]);
-  } else if (!checkCookie('tnw-')) {
+  } else if (!checkCookie(prefix)) {
     var chosen = 0,
         random1 = Math.round((Math.random() * Object.keys(changes).length));
     for (var j = 0; j <= Object.keys(changes).length; j++) {
