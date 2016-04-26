@@ -1,96 +1,106 @@
-// Variables
-var testID = '001',
-      testDays = 8,
-      randomNumber = {{Random Number}},
-      testVariant = readCookie(testID),
-      previewUrl = true,
-      variants = {
-        1: {
-          execute: function() {
-            //
-          }
-        },
-        2: {
-          execute: function() {
-            //
-          }
-        }
-      };
-
-// Helpers
-function setCookie(testID, variantID, testDays) {
-  var date = new Date();
-  date.setTime(date.getTime() + (testDays * 86400000));
-  var expires = '; expires=' + date.toGMTString();
-  document.cookie = 'tnw-' + testID + '=' + variantID + expires + '; path=/';
-}
-
-function readCookie(testID) {
-  var nameEQ = 'tnw-' + testID + '=',
-      ca = document.cookie.split(';');
-
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-
-function checkCookie(name) {
-  ca = document.cookie.split(';')
-
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(name) > -1) return true;
-  }
-  return false;
-}
-
-function sendDimension(variant) {
-  if (checkCookie('_ga')) ga("set",'dimension10','tnw-' + testID + '-' + variant);
-}
-
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-  var regexS = "[\\?&]" + name + "=([^&#]*)";
-  var regex = new RegExp(regexS);
-  var results = regex.exec(window.location.search);
-  if(results == null) {
-    return "";
-  } else {
-    return decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
-}
-
-function control(testVariant) {
-  setCookie(testID, testVariant, testDays);
-  sendDimension(testVariant);
-}
-
-function variant(variantID) {
-  control(variantID);
-  if (variantID > 0) variants[variantID].execute();
-}
-
-// Check variants v.s. cookies
-var variantsRandom = Math.round(2147483647 / (Object.keys(variants).length + 1));
-
-if(previewUrl && getParameterByName('previewUrl') != "") {
-  variant(getParameterByName('previewUrl'));
-} else if (testVariant) {
-  variant(testVariant);
-} else if (!checkCookie('tnw-')) {
-  var chosen = 0;
-  for (var j = 0; j <= 2147483647; j+= variantsRandom) {
-    if (randomNumber <= variantsRandom) {
-      variant(chosen);
-      break;
-    } else if (randomNumber >= j && randomNumber < (j + variantsRandom)) {
-      variant(chosen);
-      break;
+function createCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
     }
-    chosen++;
-  }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+function createABtest() {
+    var randomChange = randomNumber % variants.length;
+    createCookie('tnw-cookie', variants[randomChange], 9);
+    if (variants[randomChange] != "0") {
+        var newcookie = variants[randomChange].split('.');
+        var changeID = newcookie[0];
+        var variantID = newcookie[1];
+
+        changes[changeID]['variants'][variantID].execute();
+        sendDimension(changeID, variantID);
+    } else {
+        sendDimension(0)
+    }
+
+}
+function sendDimension(changeID, variantID) {
+    if (readCookie('_ga')) {
+        if (changeID != 0) {
+            dataLayer.push({ 'event':'abTest', 'eventCategory': 'ab-test', 'eventAction': prefix + '-' + changeID + '-' + variantID, 'eventLabel': prefix + '-' + changeID + '-' + variantID, 'eventNonInteraction': 1 });
+        } else {
+            dataLayer.push({ 'event':'abTest', 'eventCategory': 'ab-test', 'eventAction': prefix + '-0-0', 'eventLabel': prefix + '-0-0', 'eventNonInteraction': 1 });
+        }
+    }
+}
+function checkCookie(name) {
+    ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(name) > -1) return true;
+    }
+    return false;
+}
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}
+
+var prefix = 'tnw';
+var randomNumber = {{Random Number}};
+var changes = {
+    1: {
+        variants: {
+            1: {
+                execute: function () {
+
+                }
+            }
+        }
+    },
+    2: {
+        variants: {
+            1: {
+                execute: function () {
+
+                }
+            },
+            2: {
+                execute: function () {
+
+                }
+            }
+        }
+    }
+};
+var variants = ["0"];
+for (var j in changes) {
+    for (var x in changes[j]['variants']) {
+        variants.push(j + '.' + x);
+    }
+}
+if (readCookie('tnw-cookie')) {
+    if (variants.indexOf(readCookie('tnw-cookie')) != -1) {
+        var currentCookie = readCookie('tnw-cookie').split('.');
+        var currentChangeID = currentCookie[0];
+        var currentVariantID = 0;
+        if (currentChangeID != 0) {
+            currentVariantID = currentCookie[1];
+            changes[currentChangeID]['variants'][currentVariantID].execute();
+        }
+        sendDimension(currentChangeID, currentVariantID);
+    } else {
+        eraseCookie('tnw-cookie');
+        createABtest();
+    }
+} else {
+    createABtest();
 }
