@@ -19,7 +19,7 @@ function readCookie(name) {
 }
 function createABtest() {
     var randomChange = randomNumber % variants.length;
-    createCookie('tnw-cookie', variants[randomChange], 9);
+    createCookie(prefix + '-cookie', variants[randomChange], 9);
     if (variants[randomChange] != "0") {
         var newcookie = variants[randomChange].split('.');
         var changeID = newcookie[0];
@@ -87,9 +87,9 @@ for (var j in changes) {
         variants.push(j + '.' + x);
     }
 }
-if (readCookie('tnw-cookie')) {
-    if (variants.indexOf(readCookie('tnw-cookie')) != -1) {
-        var currentCookie = readCookie('tnw-cookie').split('.');
+if (readCookie(prefix + '-cookie')) {
+    if (variants.indexOf(readCookie(prefix + '-cookie')) != -1) {
+        var currentCookie = readCookie(prefix + '-cookie').split('.');
         var currentChangeID = currentCookie[0];
         var currentVariantID = 0;
         if (currentChangeID != 0) {
@@ -98,7 +98,7 @@ if (readCookie('tnw-cookie')) {
         }
         sendDimension(currentChangeID, currentVariantID);
     } else {
-        eraseCookie('tnw-cookie');
+        eraseCookie(prefix + '-cookie');
         createABtest();
     }
 } else {

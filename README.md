@@ -1,11 +1,11 @@
-# A/B Testing with Google Tag Manager
+# A/B/n Testing with Google Tag Manager
 Scripts that support A/B/n + Multivariate Testing (for [The Next Web]
 (http://thenextweb.com)), via [Google Tag Manager](http://tagmanager.google.com).
 
 Features
 --------
-* Supports: A/B testing and Multivariate testing.
-* Integration with Google Analytics, will send data for variants to custom dimensions.
+* Supports: A/B/n testing and Multivariate testing.
+* Integration with Google Analytics, will send data for event to the dataLayer.
 * Supported via Google Tag Manager but also easily configurable to run natively.
 
 <hr />
@@ -15,12 +15,9 @@ Both scripts work in a similar order and require the use of Google Tag Manager
 to make sure it will work. You can add a new tag there to make sure your
 variants are working.
 
-* `testID` - the id for your test.
-* `testDays` - the number of days you'd like to run the test.
+* `prefix` - a string that is going to be used to set cookies + check for tests.
 * `randomNumber` - the randon number variable used in Google Tag Manager. Make
 sure you enabled Random Number as a variable in GTM.
-* `testVariant` - reads if the user has a cookie to see if he's in a current variant.
-* `previewUrl` - do you want to enable the parameter to preview a variant, true by default.
 * `variants` - the code for the variants, you can add an unlimited amount of variants.
 
 We'll check if a user is in a certain variant to make sure that the user doesn't
@@ -30,64 +27,70 @@ any other test currently by checking for any cookies that start with: `tnw`.
 ### Quick start:
 Include the whole script and at the top of the script change the testing variables:
 
-	// Constants
-	vars testID = '001',
-		   testDays = 8,
-		   randomNumber = {{Randon Number}},
-		   testVariant = readCookie(testID),
-		   previewUrl = true,
-		   variants = {
-		     1: {
-		       execute: function() {
-		         //
-		       }
-		     },
-		     2: {
-		       execute: function() {
-		         //
-		     }
-		   };
+	// Variables
+	var prefix = 'tnw';
+	var randomNumber = {{Random Number}};
+	var changes = {
+	    1: {
+	        variants: {
+	            1: {
+	                execute: function () {
 
-*Note:* You'll never have to add 0, it will take care of the original variant itself.
+	                }
+	            }
+	        }
+	    },
+	    2: {
+	        variants: {
+	            1: {
+	                execute: function () {
+
+	                }
+	            },
+	            2: {
+	                execute: function () {
+
+	                }
+	            }
+	        }
+	    }
+	};
+
+*Note:* You'll never have to add 0, which is the original, it will take care of
+the original variant itself.
 You can read more about [how to add a test in Google Tag Manager here](https://github.com/MartijnSch/cro/wiki/How-to-add-a-test-in-Google-Tag-Manager-(GTM)).
 
 #### Google Analytics
 To measure the variants + experiments in Google Analytics we send the data to
-Google Analytics via custom dimensions. In both scripts we send the data via the
-`sendDimension(variant)` function.
+Google Analytics via the dataLayer. In both scripts we send the data via the
+`abTest` event.
 You'll have to create a custom report in Google Analytics to show you the
 specific data for your variants.
 
 Data in Google Analytics for different variants will show up like:
 
-* `tnw-{testID}-{testVariant}` for A/B testing.
-* `tnw-{testID}-{changeID}-{testVariant}` for multivariate testing (MVT).
-
-*Note:* Currently it's using dimension 10, if you start using this you might
-want to change this dimension and set it up in Google Analytics. Also we use the
- prepend: `tnw` but obviously you can change this to whatever you'd like.
+* `prefix-{testID}-{testVariant}` for A/B testing.
+* `prefix-{testID}-{changeID}-{testVariant}` for multivariate testing (MVT).
 
 #### Cookies
 We set the cookies for the length of the test that is added in the variables at
 the beginning of a test. The names and values of the cookies look like:
 
-* Name: `tnw-{testID}`, with the value: `{testVariant}` for A/B testing.
-* Name: `tnw-{testID}`, with the value: `{changeID}-{testVariant}` for
+* Name: `prefix-{testID}`, with the value: `{testVariant}` for A/B testing.
+* Name: `prefix-{testID}`, with the value: `{changeID}-{testVariant}` for
 multivariate testing (MVT).
 
 *Note:* We prepend the cookie name: `tnw` but obviously you can change this to
-whatever you'd like.
-
-#### Preview
-You want to preview the changes of a certain test? Make sure that you add:
-`?previewUrl={testVariant}` to the URL of a page to check your changes.
-
-Todo
-=======
-* Make sure that you can run multiple A/B tests at the same time.
+whatever you'd like by changing the prefix variable: `prefix`.
 
 History
 =======
+#### April 27, 2016 (2016-04-27)
+* Allow for running A/B/n tests.
+* Change the use of the pre-fix.
+* Add support for the dataLayer.
+* Clean & tidy up a lot of code.
+
 #### November 21, 2015 (2015-11-21)
 * Add a preview URL.
 
